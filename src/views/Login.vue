@@ -40,10 +40,11 @@ export default {
         LoginRequest.login(this.email, this.password)
           .then(response => {
             this.$store.dispatch('session/setInfoLogin', response)
-            this.$router.push('Home')
+            this.$router.push({ name: 'Home' })
           })
           .catch(error => {
-            console.log(error)
+            console.log(error, error.message)
+            this.$vs.notify({ text: error.message, color: 'danger' })
           })
       }
     }
