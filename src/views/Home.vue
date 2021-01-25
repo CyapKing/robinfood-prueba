@@ -1,18 +1,27 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <vs-row id="home">
+    <PanelPizza />
+    <HomeComponent />
+  </vs-row>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HomeComponent from '@/components/Home.vue'
+import PanelPizza from '@/components/PanelPizza.vue'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    HomeComponent,
+    PanelPizza
+  },
+  mounted() {
+    console.log('mounted')
   }
 }
 </script>
+<style lang="scss">
+#home {
+  height: 100%;
+}
+</style>
