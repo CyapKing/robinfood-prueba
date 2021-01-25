@@ -1,34 +1,32 @@
 <template>
-  <div id="login-container">
-    <vs-row vs-w="12">
-      <vs-col id="left-container-login" vs-lg="4" vs-sm="0" vs-xs="0">
-        <img id="icon" src="@/images/login/pizza.png" alt="" />
-      </vs-col>
-      <vs-col id="right-container-login" vs-lg="8" vs-sm="12" vs-xs="12">
-        <div id="form-login">
-          <div id="logo-company-login" />
-          <span class="title">Bienvenido</span>
-          <span class="description">A las mejores pizzas del país</span>
-          <div class="user-input">
-            <vs-input placeholder="Usuario" v-model="email" />
-            <img id="icon" src="@/images/login/ic_usuario.png" alt="" />
-          </div>
-          <div class="user-input margin">
-            <vs-input placeholder="Contraseña" v-model="password" />
-            <img id="icon" src="@/images/login/ic_password.png" alt="" />
-          </div>
-          <a id="forgot-password" href="">¿Olvidaste tu contraseña?</a>
-          <div class="user-input">
-            <vs-button color="warning" type="filled" @click="login">Iniciar Sesión</vs-button>
-          </div>
+  <vs-row id="login" vs-w="12">
+    <PanelPizza />
+    <vs-col id="right-container-login" vs-lg="8" vs-sm="12" vs-xs="12">
+      <div id="form-login">
+        <div id="logo-company-login" />
+        <span class="title">Bienvenido</span>
+        <span class="description">A las mejores pizzas del país</span>
+        <div class="user-input">
+          <vs-input placeholder="Usuario" v-model="email" />
+          <img id="icon" src="@/images/login/ic_usuario.png" alt="" />
         </div>
-      </vs-col>
-    </vs-row>
-  </div>
+        <div class="user-input margin">
+          <vs-input type="password" placeholder="Contraseña" v-model="password" />
+          <img id="icon" src="@/images/login/ic_password.png" alt="" />
+        </div>
+        <a id="forgot-password" href="">¿Olvidaste tu contraseña?</a>
+        <div class="user-input">
+          <vs-button color="warning" type="filled" @click="login">Iniciar Sesión</vs-button>
+        </div>
+      </div>
+    </vs-col>
+  </vs-row>
 </template>
 <script>
 import LoginRequest from '@/api/login/index'
+import PanelPizza from '@/components/PanelPizza.vue'
 export default {
+  components: { PanelPizza },
   name: 'Login',
   data() {
     return {
@@ -38,36 +36,25 @@ export default {
   },
   methods: {
     login() {
-      LoginRequest.login(this.email, this.password)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      if (this.email && this.password) {
+        LoginRequest.login(this.email, this.password)
+          .then(response => {
+            this.$store.dispatch('session/setInfoLogin', response)
+            this.$router.push('Home')
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     }
   }
 }
 </script>
 <style lang="scss">
-#login-container {
-  width: 100vw;
-  height: 100vh;
-
-  .vs-row,
+#login {
+  height: 100%;
   .vs-col {
     height: 100%;
-  }
-
-  #left-container-login {
-    display: flex;
-    align-items: center;
-    background-image: url('../images/login/imagebkg.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    #icon {
-      width: 100%;
-    }
   }
 
   #right-container-login {

@@ -1,5 +1,5 @@
 const getters = {
-  getToken(state) {
+  userInfo(state) {
     return state.userInfo
   }
 }
