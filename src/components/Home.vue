@@ -2,16 +2,16 @@
   <vs-col vs-lg="8" vs-sm="12" vs-xs="12">
     <div id="home-container">
       <vs-button id="logout-home" color="dark" type="flat" icon="lock">Salir</vs-button>
-      <div>
+      <div id="tab-selected">
         <vs-button color="warning" text-color="#000000" type="line">Pizzerías</vs-button>
       </div>
       <div id="header-list-home">
         <span class="title">Tiendas</span>
         <span class="description">Escoge tu pizzería favorita</span>
       </div>
-      <div id="store-list-home">
-        <StoreCard />
-      </div>
+      <ul id="store-list-home">
+        <StoreCard v-for="(store, index) in stores" :key="index" :store="store" />
+      </ul>
       <div id="footer-home">
         <div>
           <vs-button color="#ffffff" type="flat" icon="facebook" size="large"></vs-button>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import HomeRequest from '@/api/home'
 import StoreCard from './StoreCard.vue'
 
 export default {
@@ -31,8 +32,18 @@ export default {
     StoreCard
   },
   name: 'Home',
+  data() {
+    return {
+      stores: []
+    }
+  },
   mounted() {
-    console.log('home')
+    HomeRequest.getStores().then(response => {
+      const stores = response.data.response.stores
+      if (stores) {
+        this.stores = stores
+      }
+    })
   }
 }
 </script>
@@ -46,11 +57,17 @@ export default {
   #logout-home {
     align-self: flex-end;
   }
+
+  #logout-home,
+  #tab-selected,
+  #header-list-home {
+    margin-right: 50px;
+    margin-left: 50px;
+  }
+
   #header-list-home {
     display: flex;
     flex-direction: column;
-    margin-top: 3%;
-    margin-bottom: 3%;
     .title {
       font-weight: bold;
       font-size: 30px;
@@ -65,8 +82,11 @@ export default {
   #store-list-home {
     flex: 1;
     display: flex;
+    flex-basis: 0;
     flex-wrap: wrap;
     overflow-y: auto;
+    margin-right: 30px;
+    margin-left: 30px;
   }
   #footer-home {
     display: flex;
