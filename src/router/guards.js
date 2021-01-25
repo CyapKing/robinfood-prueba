@@ -10,7 +10,6 @@ export function requiresAuth(to, from, next) {
 }
 
 export function requiresAnonymous(to, from, next) {
-  console.log(store.getters['session/userInfo'])
   if (!store.getters['session/userInfo']) {
     return next()
   } else {

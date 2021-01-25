@@ -1,6 +1,7 @@
 const actions = {
   setInfoLogin(context, userInfo) {
-    localStorage.setItem('userInfo', userInfo)
+    delete userInfo.password
+    localStorage.setItem('userInfo', JSON.stringify(userInfo))
     context.commit('setInfoLogin', userInfo)
   },
   logout(context) {

@@ -39,11 +39,11 @@ export default {
       if (this.email && this.password) {
         LoginRequest.login(this.email, this.password)
           .then(response => {
-            this.$store.dispatch('session/setInfoLogin', response)
-            this.$router.push({ name: 'Home' })
+            this.$store.dispatch('session/setInfoLogin', response).then(() => {
+              this.$router.push({ name: 'Home' })
+            })
           })
           .catch(error => {
-            console.log(error, error.message)
             this.$vs.notify({ text: error.message, color: 'danger' })
           })
       }
